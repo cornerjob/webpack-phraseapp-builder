@@ -1,0 +1,23 @@
+{
+  "name": "webpack-pharseapp-builder",
+  "version": "1.0.0",
+  "description": "A webpack plugin to download translations from phraseapp and place them in your project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseaplwork/webpack-phraseapp-builder.git"
+  },
+  "keywords": [
+    "webpack",
+    "phraseapp"
+  ],
+  "author": "joseaplwork",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joseaplwork/webpack-phraseapp-builder/issues"
+  },
+  "homepage": "https://github.com/joseaplwork/webpack-phraseapp-builder#readme"
+}
