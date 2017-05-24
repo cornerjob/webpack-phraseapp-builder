@@ -4,20 +4,31 @@
   "description": "A webpack plugin to download translations from phraseapp and place them in your project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joseaplwork/webpack-phraseapp-builder.git"
+    "url": "git+https://github.com/cornerjob/webpack-phraseapp-builder.git"
   },
   "keywords": [
     "webpack",
     "phraseapp"
   ],
-  "author": "joseaplwork",
+  "author": "cornerjob",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joseaplwork/webpack-phraseapp-builder/issues"
+    "url": "https://github.com/cornerjob/webpack-phraseapp-builder/issues"
   },
-  "homepage": "https://github.com/joseaplwork/webpack-phraseapp-builder#readme"
+  "homepage": "https://github.com/cornerjob/webpack-phraseapp-builder#readme",
+  "devDependencies": {
+    "jest": "20.0.0",
+    "memory-fs": "0.4.1",
+    "webpack": "2.5.1"
+  },
+  "jest": {
+    "testRegex": "__tests__/.*\\.test\\.js$",
+    "coverageDirectory": "<rootDir>/coverage"
+  }
 }
