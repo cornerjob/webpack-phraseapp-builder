@@ -1,5 +1,5 @@
 {
-  "name": "webpack-pharseapp-builder",
+  "name": "webpack-phraseapp-builder",
   "version": "1.0.0",
   "description": "A webpack plugin to download translations from phraseapp and place them in your project",
   "main": "index.js",

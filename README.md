@@ -3,12 +3,19 @@
 Webpack plugin for generating translations files from PhraseApp.
 This plugin uses the download API endpoint from PhraseApp, for further information please see the following [link](https://phraseapp.com/docs/api/v2/locales/#download)
 
+## Install
+
+To install the package run the following command:
+```shell
+  npm install -D webpack-phraseapp-builder
+```
+
 ## Usage
 
 In your `webpack.config.js`
 
 ```javascript
-var PhraseAppBuilderPlugin = require('webpack-pharseapp-builder');
+var PhraseAppBuilderPlugin = require('webpack-phraseapp-builder');
 
 module.exports = {
     // ...
