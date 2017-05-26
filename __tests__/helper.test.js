@@ -4,7 +4,7 @@ jest.mock('request', function() {
   return function(options, cb) {
     if (options) {
       if (options.url === 'error') {
-        cb('error', null, null);
+        cb('error', { statusCode: 400 }, null);
       }
       if (options.url === 'success') {
         var response = {
@@ -55,7 +55,7 @@ describe('PhraseAppBuilderPlugin helper', function() {
       var accessToken = 'test';
       var result = helper.phraseAppRequest(url, accessToken);
 
-      expect(result).rejects.toEqual('error');
+      expect(result).rejects.toEqual(400);
     });
 
     it('should return the content and the fileName', function() {

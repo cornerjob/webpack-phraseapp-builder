@@ -56,7 +56,7 @@ jest.mock('../lib/helper', function () {
           fileName: url === 'id2' ? 'en.json' : 'es.json'
         });
       } else {
-        return Promise.reject();
+        return Promise.reject(400);
       }
     }
   }
