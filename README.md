@@ -2,6 +2,7 @@
 
 Webpack plugin for generating translations files from PhraseApp.
 This plugin uses the download API endpoint from PhraseApp, for further information please see the following [link](https://phraseapp.com/docs/api/v2/locales/#download)
+This plugin will run before the Webpack compilation, so the translations are downloaded before.
 
 ## Install
 
@@ -34,7 +35,7 @@ module.exports = {
 This will generate translations files in your configured output directory, for example:
 
 ```json
-// build/es.json
+// src/translations/es.json
 
 {
   "some.key": "hello",
