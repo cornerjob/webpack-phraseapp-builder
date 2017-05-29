@@ -24,6 +24,7 @@ module.exports = {
         localesId: ['someLocaleId'],  // Get the locales id from PhraseApp, you can add many ids
         accessToken: 'theAccesTokenId',  // Get your accessToken from PhraseApp
         projectId: 'theProjectId', // Get the project id from PhraseApp
+        outputPath: 'path',
         format: 'json' // specify the format from Pharseapp
       })
     ]
@@ -44,5 +45,6 @@ This will generate translations files in your configured output directory, for e
 
 * `localesId`: The locales id from your PhraseApp project.
 * `accessToken`: The accessToken to authorize the PhraseApp API.
+* `outputPath`: The path where you want to download the translations.
 * `projectId`: The project id from PhraseApp from where you want to extract your translations
 * `format`: The format to download the translations
