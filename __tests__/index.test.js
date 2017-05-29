@@ -1,5 +1,6 @@
 var path = require('path');
 var MemoryFileSystem = require('memory-fs');
+var fs = require('fs');
 
 var webpack = require('webpack');
 
@@ -70,7 +71,7 @@ describe('PhraseAppBuilderPlugin', function() {
       localesId: ['testId'],
       accessToken: 'testAccessToken',
       projectId: 'testProjectId',
-      outputPath: OUTPUT_DIR,
+      outputPath: __dirname,
       format: 'json'
     };
   });
@@ -79,9 +80,11 @@ describe('PhraseAppBuilderPlugin', function() {
     expect(PhraseAppBuilderPlugin).toBeDefined();
   });
 
-  it('should build the translation in the webpack assets', function(done) {
+  it('should download the translations in the specified path', function(done) {
+    pluginOptions['outputPath'] = __dirname;
+
     webpackCompile(pluginOptions, function(stats) {
-      expect(stats.compilation.assets[fileName]).toBeDefined();
+      expect(fs.existsSync(path.resolve(__dirname, './es.json'))).toBe(true);
       done();
     });
   });
@@ -109,12 +112,11 @@ describe('PhraseAppBuilderPlugin', function() {
   });
 
   it('should download many translations', function(done) {
-    var extraFileName = 'en.json';
     pluginOptions['localesId'] = ['id1', 'id2'];
 
     webpackCompile(pluginOptions, function(stats) {
-      expect(stats.compilation.assets[fileName]).toBeDefined();
-      expect(stats.compilation.assets[extraFileName]).toBeDefined();
+      expect(fs.existsSync(path.resolve(__dirname, './es.json'))).toBe(true);
+      expect(fs.existsSync(path.resolve(__dirname, './en.json'))).toBe(true);
       done();
     });
   });
