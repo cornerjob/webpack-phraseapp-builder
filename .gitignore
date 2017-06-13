@@ -59,3 +59,4 @@ typings/
 
 # Test files
 __tests__/*.json
+__tests__/translations

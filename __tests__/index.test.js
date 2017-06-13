@@ -111,6 +111,21 @@ describe('PhraseAppBuilderPlugin', function() {
     });
   });
 
+  it('should create the given path', function(done) {
+    const pathToCreate = path.resolve(__dirname, './translations');
+    pluginOptions['outputPath'] = pathToCreate;
+
+    webpackCompile(pluginOptions, function(stats) {
+      const filePath = path.resolve(__dirname, './translations/es.json');
+
+      expect(fs.existsSync(filePath)).toBe(true);
+
+      fs.unlinkSync(filePath);
+      fs.rmdirSync(pathToCreate);
+      done();
+    });
+  });
+
   it('should download many translations', function(done) {
     pluginOptions['localesId'] = ['id1', 'id2'];
 
