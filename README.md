@@ -2,7 +2,9 @@
 
 Webpack plugin for generating translations files from PhraseApp.
 This plugin uses the download API endpoint from PhraseApp, for further information please see the following [link](https://phraseapp.com/docs/api/v2/locales/#download)
-This plugin will run before the Webpack compilation, so the translations are downloaded before.
+This plugin will run before the Webpack compilation, so the translations are available before the Webpack assertions.
+
+*Since this plugin will download the translations before the assertions, is not recommended to use the same path as the [output path for Webpack](https://github.com/webpack/docs/wiki/configuration#configuration-object-content) assertions*
 
 ## Install
 
@@ -22,11 +24,10 @@ module.exports = {
     // ...
     plugins: [
       new PhraseAppBuilderPlugin({
-        localesId: ['someLocaleId'],  // Get the locales id from PhraseApp, you can add many ids
         accessToken: 'theAccesTokenId',  // Get your accessToken from PhraseApp
         projectId: 'theProjectId', // Get the project id from PhraseApp
         outputPath: 'path',
-        format: 'json' // specify the format from Pharseapp
+        format: 'json' // specify the format from Phraseapp
       })
     ]
 };

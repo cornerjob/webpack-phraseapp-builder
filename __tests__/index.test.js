@@ -7,7 +7,7 @@ var webpack = require('webpack');
 var PhraseAppBuilderPlugin = require('../index.js');
 
 var OUTPUT_DIR = path.resolve(__dirname, './dist');
-var fileName = 'es.json';
+var fileNameEs = 'es.json';
 
 // Webpack configuration
 
@@ -43,21 +43,40 @@ function webpackCompile(options, callback) {
   })
 }
 
+// Mock config
+
+jest.mock('../lib/config', function () {
+  return {
+    phraseappLocalesUrl: function() {return 'localesURL'},
+    phraseappDownloadLocaleUrl: function() {return 'downloadURL'},
+    phraseappFormatsUrl: function() {return 'formatsURL'}
+  }
+});
+
 // Mock helper
 
 jest.mock('../lib/helper', function () {
   return {
-    buildEndPoint: function (url){
-      return url.localeId;
+    getFormat: function (url){
+      return { "api_name": "json", extension: "json" };
     },
     phraseAppRequest: function(url) {
-      if (url !== 'error') {
-        return Promise.resolve({
-          content: '{ "some": "text" }',
-          fileName: url === 'id2' ? 'en.json' : 'es.json'
-        });
-      } else {
-        return Promise.reject(400);
+      switch (url) {
+        case 'success':
+          return Promise.resolve('{ "some": "text" }');
+          break;
+        case 'localesURL':
+          return Promise.resolve('[{ "id": "testEs", "name": "es" }, { "id": "testEn", "name": "en" }]');
+          break;
+        case 'downloadURL':
+          return Promise.resolve('{ "some": "text" }');
+          break;
+        case 'formatsURL':
+          return Promise.resolve('[{ "api_name": "json", "extension": "json" }]');
+          break;
+        case 'error':
+          return Promise.reject(400);
+          break;
       }
     }
   }
@@ -85,6 +104,7 @@ describe('PhraseAppBuilderPlugin', function() {
 
     webpackCompile(pluginOptions, function(stats) {
       expect(fs.existsSync(path.resolve(__dirname, './es.json'))).toBe(true);
+      expect(fs.existsSync(path.resolve(__dirname, './en.json'))).toBe(true);
       done();
     });
   });
@@ -96,9 +116,9 @@ describe('PhraseAppBuilderPlugin', function() {
     });
   });
 
-  it('should avoid the proccess if there are missed parameters', function(done) {
+  it('should avoid the process if there are missed parameters', function(done) {
     webpackCompile(null, function(stats) {
-      expect(stats.compilation.assets[fileName]).not.toBeDefined();
+      expect(stats.compilation.assets[fileNameEs]).not.toBeDefined();
       done();
     });
   });
@@ -106,7 +126,15 @@ describe('PhraseAppBuilderPlugin', function() {
   it('should show info message if there was any error', function(done) {
     pluginOptions['localesId'] = ['error'];
     webpackCompile(pluginOptions, function(stats) {
-      expect(stats.compilation.assets[fileName]).not.toBeDefined();
+      expect(stats.compilation.assets[fileNameEs]).not.toBeDefined();
+      done();
+    });
+  });
+
+  it('should avoid the process if outputPath is not set', function(done) {
+    pluginOptions['outputPath'] = null;
+    webpackCompile(pluginOptions, function(stats) {
+      expect(stats.compilation.assets[fileNameEs]).not.toBeDefined();
       done();
     });
   });
@@ -116,22 +144,15 @@ describe('PhraseAppBuilderPlugin', function() {
     pluginOptions['outputPath'] = pathToCreate;
 
     webpackCompile(pluginOptions, function(stats) {
-      const filePath = path.resolve(__dirname, './translations/es.json');
+      const filePathEs = path.resolve(__dirname, './translations/es.json');
+      const filePathEn = path.resolve(__dirname, './translations/en.json');
 
-      expect(fs.existsSync(filePath)).toBe(true);
+      expect(fs.existsSync(filePathEs)).toBe(true);
+      expect(fs.existsSync(filePathEn)).toBe(true);
 
-      fs.unlinkSync(filePath);
+      fs.unlinkSync(filePathEs);
+      fs.unlinkSync(filePathEn);
       fs.rmdirSync(pathToCreate);
-      done();
-    });
-  });
-
-  it('should download many translations', function(done) {
-    pluginOptions['localesId'] = ['id1', 'id2'];
-
-    webpackCompile(pluginOptions, function(stats) {
-      expect(fs.existsSync(path.resolve(__dirname, './es.json'))).toBe(true);
-      expect(fs.existsSync(path.resolve(__dirname, './en.json'))).toBe(true);
       done();
     });
   });

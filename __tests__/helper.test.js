@@ -7,13 +7,7 @@ jest.mock('request', function() {
         cb('error', { statusCode: 400 }, null);
       }
       if (options.url === 'success') {
-        var response = {
-          statusCode: 200,
-          headers: {
-            'content-disposition': 'attachment; filename="es.json"'
-          }
-        }
-        cb(null, response, '{"some":"text"}');
+        cb(null, { statusCode: 200 }, '{"some":"text"}');
       }
     }
   }
@@ -21,31 +15,17 @@ jest.mock('request', function() {
 
 describe('PhraseAppBuilderPlugin helper', function() {
   it('should exist', function() {
-    expect(helper.buildEndPoint).toBeDefined();
+    expect(helper.getFormat).toBeDefined();
     expect(helper.phraseAppRequest).toBeDefined();
   });
 
-  describe('buildEndPoint function', function() {
+  describe('getFormat function', function() {
     it('should return null if `projectId` is missed', function() {
-      var result1 = helper.buildEndPoint({ localeId: 'test', format: 'json' });
-      var result2 = helper.buildEndPoint({ projectId: 'test', format: 'json' });
-      var result3 = helper.buildEndPoint({ projectId: 'test', localeId: 'test' });
+      var expected = { api_name: 'json', extension: 'json' };
+      var locales = [expected];
+      var locale = 'json';
 
-      expect(result1).toBeNull();
-      expect(result2).toBeNull();
-      expect(result3).toBeNull();
-    });
-
-    it('should return a well formed url', function() {
-      var options = {
-        projectId: 'testProjectId',
-        localeId: 'testLocaleId',
-        format: 'json'
-      };
-      var result = helper.buildEndPoint(options);
-      var expected = 'https://api.phraseapp.com/api/v2/projects/testProjectId/locales/testLocaleId/download?file_format=json';
-
-      expect(result).toEqual(expected);
+      expect(helper.getFormat(locales, locale)).toBe(expected);
     });
   });
 
@@ -58,14 +38,11 @@ describe('PhraseAppBuilderPlugin helper', function() {
       expect(result).rejects.toEqual(400);
     });
 
-    it('should return the content and the fileName', function() {
+    it('should return the content', function() {
       var url = 'success';
       var accessToken = 'test';
       var result = helper.phraseAppRequest(url, accessToken);
-      var expected = {
-        content: '{"some":"text"}',
-        fileName: 'es.json'
-      };
+      var expected = '{"some":"text"}';
 
       expect(result).resolves.toEqual(expected);
     });
