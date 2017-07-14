@@ -45,7 +45,6 @@ This will generate translations files in your configured output directory, for e
 
 **Options:**
 
-* `localesId`: The locales id from your PhraseApp project.
 * `accessToken`: The accessToken to authorize the PhraseApp API.
 * `outputPath`: The path where you want to download the translations.
 * `projectId`: The project id from PhraseApp from where you want to extract your translations
